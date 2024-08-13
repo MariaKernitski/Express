@@ -1,0 +1,61 @@
+
+const db = [];
+
+let proxID = 1;
+
+const model = (body, id = proxID++) => {
+
+    if(body.nome != "" && body.nome != undefined) {
+        return {
+            id,
+            nome: body.nome
+        }
+    }
+}
+
+const store = (body) => {
+    const novo = model(body);
+
+    if(novo) {
+        db.push(novo);
+        return 201;
+    }
+
+    return 400;
+
+}
+
+const index = () => db;
+
+const show = id => db.find(el => el.id == id);//busca e retorna um indice especifico
+
+const update = (body, id) => {
+
+        const indice = db.findIndex(el => el.id == id);
+
+        if(indice != -1) {
+            const novo = model(body, id);
+
+            if(novo) {
+                db[indice] = novo;
+                return 200;
+            }
+        }
+        return 400;
+}
+
+const destroy = (id) => {
+
+        const indice = db.findIndex(el => el.id == id);
+
+        if (indice != -1) {
+            db.splice(indice, 1);
+        }
+}
+
+module.exports = {
+    store,
+    index,
+    update,
+    destroy
+}
